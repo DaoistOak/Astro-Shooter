@@ -1,0 +1,15 @@
+# Ignore build directory
+build/
+
+# Ignore object files
+*.o
+
+# Optional: Ignore executable files
+hello
+*.out
+
+# Optional: Ignore VS Code settings
+.vscode/
+
+# Optional: macOS specific files
+.DS_Store 
