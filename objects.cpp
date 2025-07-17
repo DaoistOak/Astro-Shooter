@@ -1,12 +1,14 @@
 #include <ncurses.h>
+#include <cstdlib>
+#include <ctime>
 #include "objects.h"
 
 // Spaceship method implementations
 Spaceship::Spaceship(int row, int col) : row(row), col(col) {}
 
 void Spaceship::display() {
-    mvprintw(row-1,col+1,"^");
-    mvprintw(row,col,"/|\\");
+    mvprintw(row-1, col+1, "^");
+    mvprintw(row, col, "/|\\");
     mvprintw(row+1, col-1, "/_^_\\");
     refresh();
 }
@@ -182,4 +184,43 @@ void ObstacleDisplayer::displayObstacle(const Asteroid& asteroid, int row, int c
         mvprintw(row + i, col, "%s", shape[i].c_str());
     }
     refresh();
+}
+
+void ObstacleDisplayer::displayRandomAsteroid(int row, int col) {
+    // Seed random number generator only once
+    static bool seedInitialized = false;
+    if (!seedInitialized) {
+        srand(time(nullptr));
+        seedInitialized = true;
+    }
+
+    // Randomly choose asteroid type
+    int asteroidType = rand() % 3;
+
+    switch (asteroidType) {
+        case 0: {
+            int adjustedCol = col - 3;  
+            int adjustedRow = row - 2;  
+            Asteroid randomAsteroid(adjustedRow, adjustedCol, 
+                static_cast<Asteroid::Variation>(rand() % 3));
+            randomAsteroid.display();
+            break;
+        }
+        case 1: {
+            int adjustedCol = col - 4;  
+            int adjustedRow = row - 2;  
+            AsteroidBig randomBigAsteroid(adjustedRow, adjustedCol, 
+                static_cast<AsteroidBig::Variation>(rand() % 3));
+            randomBigAsteroid.display();
+            break;
+        }
+        case 2: {
+            int adjustedCol = col - 2;  
+            int adjustedRow = row - 1;  
+            AsteroidSmall randomSmallAsteroid(adjustedRow, adjustedCol, 
+                static_cast<AsteroidSmall::Variation>(rand() % 3));
+            randomSmallAsteroid.display();
+            break;
+        }
+    }
 }

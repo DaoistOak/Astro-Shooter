@@ -74,6 +74,9 @@ private:
 class ObstacleDisplayer {
 public:
     static void displayObstacle(const Asteroid& asteroid, int row, int col);
+    
+    // New function to display a random asteroid
+    static void displayRandomAsteroid(int row, int col);
 };
 
 #endif // OBJECTS_H 
