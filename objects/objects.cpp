@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 #include "objects.h"
+using namespace std; // Predeclare using namespace std
 
-// Spaceship method implementations
 Spaceship::Spaceship(int row, int col) : row(row), col(col) {}
 
 void Spaceship::display() {
@@ -143,7 +143,6 @@ void AsteroidBig::display() {
     refresh();
 }
 
-// AsteroidSmall method implementations
 AsteroidSmall::AsteroidSmall(int row, int col, Variation var) : row(row), col(col) {
     switch (var) {
         case VAR1:
@@ -224,3 +223,23 @@ void ObstacleDisplayer::displayRandomAsteroid(int row, int col) {
         }
     }
 }
+int getRandomCol(int maxCol) {
+    static bool seeded = false;
+    if (!seeded) {
+        srand(time(nullptr));
+        seeded = true;
+    }
+    return rand() % maxCol;
+}
+
+struct FallingObstacle {
+    int row;
+    int col;
+    int type; // 0: Asteroid, 1: AsteroidBig, 2: AsteroidSmall
+    int variation;
+    FallingObstacle(int c, int t, int v) : row(0), col(c), type(t), variation(v) {}
+    void display() const;
+    void moveDown() { row++; }
+};
+void spawnObstacle(std::vector<FallingObstacle>& obstacles, int maxCol);
+void updateObstacles(std::vector<FallingObstacle>& obstacles, int maxRow);

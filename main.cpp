@@ -1,5 +1,13 @@
 #include <ncurses.h>
-#include "objects.h"  // Create a header file instead of directly including .cpp
+#include "objects/objects.h"
+#include "menu/menu.h"
+
+int showMenu(int row, int col) {
+    Menu menu(row/2 - 5, col/2 - 10, 20, 7, "Main Menu");
+    menu.addButton("Play");
+    menu.addButton("Exit");
+    return menu.run();
+}
 
 int main() {
     initscr();
@@ -10,14 +18,35 @@ int main() {
     int row, col;
     getmaxyx(stdscr, row, col);
 
-    // Display a random asteroid at the start
+    // Create and show menu
+    int choice = showMenu(row, col);
+    if (choice == 1) { // Exit
+        endwin();
+        return 0;
+    }
+    clear();
+
     ObstacleDisplayer::displayRandomAsteroid(row / 2, col / 2);
 
     Spaceship spaceship(row - 2, col / 2 -2); // present in objects.cpp
     spaceship.display(); //see objects.cpp
 
     int c;
-    while ((c = getch()) != 'q') { // exit game with q
+    while (true) {
+        c = getch();
+        if (c == 'q') {
+            // Open the menu again
+            clear();
+            int choice = showMenu(row, col);
+            if (choice == 1) { // Exit
+                endwin();
+                return 0;
+            }
+            clear();
+            ObstacleDisplayer::displayRandomAsteroid(row / 2, col / 2);
+            spaceship.display();
+            continue;
+        }
         switch (c) { //can only move in 1 direction at once
             case KEY_UP:
                 spaceship.moveUp();
@@ -28,10 +57,11 @@ int main() {
             case KEY_LEFT:
                 spaceship.moveLeft();
                 break;
+                
             case KEY_RIGHT:
                 spaceship.moveRight();
                 break;
-            case 'r':  // Regenerate random asteroid
+            case 'r':
                 clear();
                 ObstacleDisplayer::displayRandomAsteroid(row / 2, col / 2);
                 spaceship.display();

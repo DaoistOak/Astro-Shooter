@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+using namespace std;
 
 class Spaceship {
 public:
@@ -29,12 +30,12 @@ public:
 
     Asteroid(int row, int col, Variation var = VAR1);
     void display() const;
-    const std::vector<std::string>& getShape() const;
+    const vector<string>& getShape() const;
 
 private:
     int row;
     int col;
-    std::vector<std::string> shape;
+    vector<string> shape;
 };
 
 class AsteroidBig {
@@ -51,7 +52,7 @@ public:
 private:
     int row;
     int col;
-    std::vector<std::string> shape;
+    vector<string> shape;
 };
 
 class AsteroidSmall {
@@ -68,7 +69,7 @@ public:
 private:
     int row;
     int col;
-    std::vector<std::string> shape;
+    vector<string> shape;
 };
 
 class ObstacleDisplayer {
